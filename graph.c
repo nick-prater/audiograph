@@ -18,6 +18,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -43,6 +44,11 @@ void graph_buffer_samples(struct graph *gr, float *samples, int num_samples)
     {
         gr->max_samples += (num_samples + 100000);
         gr->buff = realloc(gr->buff, gr->max_samples * sizeof(float));
+        if(gr->buff == NULL)
+        {
+            fprintf(stderr, "ERROR: failed to allocate %d bytes of memory\n", gr->max_samples * sizeof(float));
+            exit(1);
+        }
     }
 
     memcpy(gr->buff+gr->sample_count, samples, num_samples * sizeof(float));
